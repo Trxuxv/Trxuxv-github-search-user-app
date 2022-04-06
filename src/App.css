@@ -47,7 +47,23 @@
   color: #8b949e;
 }
 
+.no_one {
+  width: 100%;
+  color: white;
+  margin-top: 5rem;
+  font-weight: 300;
+  font-size: 4.5rem;
+  text-align: center;
+
+}
+
+::placeholder {
+  font-style: italic;
+  font-size: 1em;
+}
+
 .ui.button {
+  margin-top: 4rem;
   background-color: #0d1117;
   color: whitesmoke;
   height: 3.1rem;
@@ -62,10 +78,11 @@
 }
 
 .ui.input {
+  margin-top: 4rem;
   background-color: #0d1117;
   color: whitesmoke;
   height: 3rem;
-  width: 6rem;
+  min-width: 25rem;
 }
 
 .card {
