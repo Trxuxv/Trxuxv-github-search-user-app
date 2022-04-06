@@ -1,27 +1,38 @@
-import React, { useEffect, useState } from 'react';
 import { Form, Card, Image, Icon } from 'semantic-ui-react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 
 
-function App() {
-  const [name, setName] = useState('');
-  const [userName, setUsername] = useState('');
+export default function App() {
   const [followers, setFollowers] = useState('');
   const [following, setFollowing] = useState('');
-  const [repos, setRepos] = useState('');
-  const [avatar_url, setavatar] = useState('');
   const [userInput, setUserInput] = useState('');
+  const [avatar_url, setavatar] = useState('');
+  const [userName, setUsername] = useState('');
   const [error, setError] = useState(null);
+  const [repos, setRepos] = useState('');
+  const [name, setName] = useState('');
+  const [stars, setStarsdUrl] = useState('');
 
   useEffect(() => {
-    fetch("https://api.github.com/users/example")
+    fetch("https://api.github.com/users/trxuxv")
       .then(res => res.json())
       .then(data => {
         setData(data)
       })
   }, [])
 
-  const setData = ({ name, login, followers, following, public_repos, avatar_url }) => {
+  const getStars = (userInput) => {
+    fetch(`https://api.github.com/users/${userInput}/starred`)
+      .then(res => res.json())
+      .then(data => {
+        console.log("Count", data.length)
+        setStarsdUrl(data.length)
+
+      })
+  }
+
+  const setData = ({ name, login, followers, following, public_repos, avatar_url, starred_url }) => {
     setName(name);
     setUsername(login);
     setFollowers(followers);
@@ -38,6 +49,11 @@ function App() {
     fetch(`https://api.github.com/users/${userInput}`)
       .then(res => res.json())
       .then(data => {
+
+        getStars(userInput)
+        console.log(stars(userInput))
+        console.log("starts: ", data)
+
         if (data.message) {
           setError(data.message)
         } else {
@@ -48,7 +64,7 @@ function App() {
 
   return (
     <div className='body'>
-      <div className='navbar'>Github Search</div>
+      <div className='navbar'> <Icon name='github' /> Github Search</div>
       <div className='search'>
         <Form onSubmit={handleSubmit}>
           <Form.Group>
@@ -64,26 +80,25 @@ function App() {
             <Card.Content color='black'>
               <Card.Header color='black'>{name}</Card.Header>
               <p className='username' >{userName}</p>
-              <Card.Meta>
-                <span className='date'>Joined in 2015</span>
-              </Card.Meta>
             </Card.Content>
             <Card.Content extra>
-              <a>
-                <Icon name='user' />
+              <a className='ml'>
+                <Icon name='users' />
                 {followers} followers
               </a>
-            </Card.Content>
-            <Card.Content extra>
-              <a>
+              <a className='ml'>
                 <Icon name='user' />
-                {repos} repositories
+                {following} following
               </a>
             </Card.Content>
             <Card.Content extra>
-              <a>
-                <Icon name='user' />
-                {following} following
+              <a className='ml'>
+                <Icon name='folder open' />
+                {repos} repositories
+              </a>
+              <a className='ml-st'>
+                <Icon name='star outline' />
+                {stars} stars
               </a>
             </Card.Content>
           </Card>
@@ -93,5 +108,3 @@ function App() {
     </div >
   )
 }
-
-export default App;
